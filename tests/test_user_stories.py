@@ -115,3 +115,32 @@ def test_filtered_by_price_slide(driver_carnival_cruise):
 #     current_val = [int(val.get_attribute("value").replace("$", "").replace(",","")) for val in driver_carnival_cruise.find_elements(By.CLASS_NAME, "sc-epYGdz.cKWGvb")]
 #     assert current_val[0] == original_val[0]
 #     assert current_val[1] == original_val[1]
+
+
+def test_display_itinerary(driver_carnival_cruise):
+    #title_before = driver_carnival_cruise.find_element(By.CSS_SELECTOR, "span[data-testid='cg-region_BA2_TPA_PA_6_Mon']").text
+    sub_title_1_b = driver_carnival_cruise.find_element(By.CSS_SELECTOR, "div[class='sc-hHmAnv crfPPX'] div:nth-child(1) div:nth-child(2) div:nth-child(1) div:nth-child(1) div:nth-child(1) div:nth-child(4)").text
+    sub_title_2_b = driver_carnival_cruise.find_element(By.CSS_SELECTOR, "div[class='sc-hHmAnv crfPPX'] div:nth-child(1) div:nth-child(2) div:nth-child(1) div:nth-child(1) div:nth-child(2) div:nth-child(2) div:nth-child(1)").text
+    time.sleep(2)
+    driver_carnival_cruise.find_element(By.XPATH, "//div[@class='sc-hImiYT juhMOi']//div[1]//div[2]//div[1]//div[1]//div[2]//div[2]//div[1]//span[4]//a[1]").click()
+
+    #title_after = driver_carnival_cruise.find_element(By.CSS_SELECTOR, "div[class='sc-bXWnss dFsaiO'] span[data-testid='cg-region']").text
+    sub_title_2_a = driver_carnival_cruise.find_element(By.CSS_SELECTOR, "div[class='sc-gwZKzw esvLBe'] div[class='sc-cDvQBt ebgHhN']").text
+    sub_title_1_a = driver_carnival_cruise.find_element(By.CSS_SELECTOR, "div[class='sc-cQCQeq ZDeDe'] div[class='sc-fKMpNL XsmuU']").text
+
+    #assert title_before.lower() == title_after.lower()
+    assert sub_title_1_b == sub_title_1_a
+    assert sub_title_2_b.replace("\nView Itinerary", "") == sub_title_2_a
+
+
+def test_read_about(driver_carnival_cruise):
+    driver_carnival_cruise.find_element(By.XPATH, "//div[@class='sc-hImiYT juhMOi']//div[1]//div[2]//div[1]//div[1]//div[2]//div[2]//div[1]//span[4]//a[1]").click()
+    for i in range(7):
+        read_more = driver_carnival_cruise.find_elements(By.XPATH, f"//div[@id='read-more-{i}']")
+        assert len(read_more) == 1, "The day doesnt have information about the day itinerary."
+
+
+def test_start_booking(driver_carnival_cruise):
+    driver_carnival_cruise.find_element(By.XPATH, "//div[@class='sc-hImiYT juhMOi']//div[1]//div[2]//div[1]//div[1]//div[2]//div[2]//div[1]//span[4]//a[1]").click()
+    start_booking = driver_carnival_cruise.find_elements(By.XPATH, "//span[normalize-space()='START BOOKING']")
+    assert len(start_booking) == 1, "There is no book now botton."
